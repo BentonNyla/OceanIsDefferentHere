@@ -79,3 +79,42 @@ int findinLCM(int num1, int num2) // returns LCM of two numbers
         else
             return num1 * num2;
 }
+long long baseConversionToDecimal(long long preValue, int baseInfo) //inefficient during conversion from hexa to decimal 
+{
+    long long postValue{0}, power{0};
+    while (preValue)
+    {
+        if ((preValue % 10) >= baseInfo)
+        {
+            postValue = -1;
+            break;
+        }
+        postValue += (preValue % 10) * pow(baseInfo, power);
+        preValue /= 10;
+        power++;
+    }
+    return postValue;
+}
+long long baseConversionFromDecimal(long long preValue, int baseInfo) //Argument preValue is the convertable decimal, baseInfo represents the destinition base
+//inefficient during conversion from decimal to hexa
+{
+    long long postValue{0}, power{0}, midValue{0};
+
+    while (midValue < preValue)
+    {
+        midValue = pow(baseInfo, power);
+        power++;
+    }
+    power -= 2;
+    while (power >= 0)
+    {
+        postValue += static_cast<long long>(preValue / pow(baseInfo, power)) * pow(10, power);
+        preValue = preValue % static_cast<long long>(pow(baseInfo, power));
+        while (midValue > preValue)
+        {
+            power--;
+            midValue = pow(baseInfo, power);
+        }
+    }
+    return postValue;
+}
